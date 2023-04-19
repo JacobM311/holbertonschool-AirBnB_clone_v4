@@ -1,6 +1,7 @@
 $(function () {
   const amenityIds = {};
-
+  const api = 'http://' + window.location.hostname;
+  
   $('.amenities input[type=checkbox]').change(function () {
     if (this.checked) {
       amenityIds[$(this).data('name')] = $(this).data('id');
@@ -11,7 +12,7 @@ $(function () {
     $('.amenities h4').text(Object.keys(amenityIds).join(', '));
   });
 
-  $.get('http://0.0.0.0:5001/api/v1/status/', function (data, textStatus) {
+  $.get(api +':5001/api/v1/status/', function (data, textStatus) {
     if (textStatus === 'success') {
       if (data.status === 'OK') {
         $('div#api_status').addClass('available');
@@ -24,7 +25,7 @@ $(function () {
   // Make a POST request to the places_search endpoint
   $.ajax({
     type: 'POST',
-    url: 'http://0.0.0.0:5001/api/v1/places_search/',
+    url: api + ':5001/api/v1/places_search/',
     contentType: 'application/json',
     data: '{}',
     success: function (data) {
@@ -57,7 +58,7 @@ $(function () {
     $('section.places').empty();
     $.ajax({
       type: 'POST',
-      url: 'http://0.0.0.0:5001/api/v1/places_search/',
+      url: api + ':5001/api/v1/places_search/',
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       data: JSON.stringify({ amenities: Object.keys(amenityIds) }),
